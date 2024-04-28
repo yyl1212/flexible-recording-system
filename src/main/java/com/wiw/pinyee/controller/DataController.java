@@ -25,6 +25,17 @@ public class DataController {
         return Result.ok(ResultEnum.DATA_ADD_FAIL);
     }
 
+    @PostMapping("modify")
+    public Result<?> dataModify(@RequestBody JSONObject dto) {
+        Long tableId = dto.getLong("tableId");
+        Long id = dto.getLong("id");
+        dataService.dataDel(tableId, id, "auto");
+        if (dataService.dataAdd(dto, -1L, "auto")) {
+            return Result.success();
+        }
+        return Result.ok(ResultEnum.DATA_ADD_FAIL);
+    }
+
     @GetMapping("show")
     public Result<JSONArray> dataShow(@RequestParam Long tableId) {
         return Result.success(dataService.dataShow(tableId, "auto"));

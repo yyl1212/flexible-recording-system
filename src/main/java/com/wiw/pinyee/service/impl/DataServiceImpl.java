@@ -40,7 +40,7 @@ public class DataServiceImpl {
         SnowflakeGenerator snowflakeGenerator = new SnowflakeGenerator();
         Long id = snowflakeGenerator.next();
         for (AttrVO attr : tableConfigVO.getAttrList()) {
-            String attrStr = (String) dto.getOrDefault(attr.getAttrDbName(), "");
+            String attrStr = String.valueOf(dto.getOrDefault(attr.getAttrDbName(), ""));
             int dataType = attr.getAttrType() % 10;
             switch (dataType) {
                 case 0:
@@ -127,10 +127,8 @@ public class DataServiceImpl {
             }
             Db.deleteBySql(stringBuilder.toString());
             if (tableConfigVO.getChildList() != null
-            && !tableConfigVO.getChildList().isEmpty()) {
-                tableConfigVO.getChildList().forEach(child -> {
-                    dataDel(child.getId(), id, tableName);
-                });
+                    && !tableConfigVO.getChildList().isEmpty()) {
+                tableConfigVO.getChildList().forEach(child -> dataDel(child.getId(), id, tableName));
             }
         }
     }
